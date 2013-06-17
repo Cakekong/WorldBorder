@@ -1,7 +1,7 @@
 name: WorldBorder
-author: Brettflan
+author: Anthony
 description: Efficient, feature-rich plugin for limiting the size of your worlds.
-version: 1.7.2b
+version: 1
 main: com.anthony.WorldBorder.WorldBorder
 softdepend:
   - dynmap
@@ -11,6 +11,7 @@ commands:
     aliases: [worldborder, wb]
     usage: |
            /<command> - list available commands (show help).
+           /<command> polygon <x> <z> <radiusX> <radiusZ> - set polygonal world border
            /<command> set <radiusX> [radiusZ] - set world border, centered on you.
            /<command> [world] set <radiusX> [radiusZ] <x> <z> - set world border.
            /<command> [world] setcorners <x1> <z1> <x2> <z2> - set border from corners.
@@ -39,6 +40,7 @@ permissions:
   worldborder.*:
     description: Grants all WorldBorder permissions
     children:
+      worldborder.polygon: true
       worldborder.set: true
       worldborder.radius: true
       worldborder.clear: true
@@ -60,6 +62,9 @@ permissions:
       worldborder.bypass: true
       worldborder.wrap: true
       worldborder.portal: true
+  worldborder.polygon:
+    description: Can set polygonal world border
+    default: op
   worldborder.set:
     description: Can set borders for any world
     default: op

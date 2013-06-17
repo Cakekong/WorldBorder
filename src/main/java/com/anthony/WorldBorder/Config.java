@@ -49,6 +49,7 @@ public class Config {
 		return System.currentTimeMillis();
 	}
 
+	// setBorder
 	public static void setBorder(String world, BorderData border) {
 		borders.put(world, border);
 		Log("Border set. " + BorderDescription(world));
@@ -108,13 +109,13 @@ public class Config {
 		setBorderCorners(world, x1, z1, x2, z2, oldShape, oldWrap);
 	}
 
-	/******************************************************************************/
-	public static void setBorderCorners(String world, int pointsx[],
-			int pointsy[]) {
-		setBorderCorners(world, pointsx, pointsy);
+	//******************************************************************************/
+	public static void setBorderCorners(String world, int pointsx[], int pointsz[]) {
+		setBorderCorners(world, pointsx, pointsz);
 	}
-	/******************************************************************************/
-
+	//******************************************************************************/
+	
+	// removeBorder
 	public static void removeBorder(String world) {
 		borders.remove(world);
 		Log("Removed border for world \"" + world + "\".");
@@ -129,6 +130,7 @@ public class Config {
 		DynMapFeatures.removeAllBorders();
 	}
 
+	// BorderDesciption 
 	public static String BorderDescription(String world) {
 		BorderData border = borders.get(world);
 		if (border == null)
@@ -155,7 +157,8 @@ public class Config {
 	public static Map<String, BorderData> getBorders() {
 		return new LinkedHashMap<String, BorderData>(borders);
 	}
-
+	
+	// Message when you touch the edge 
 	public static void setMessage(String msg) {
 		message = msg;
 		Log("Border message is now set to: " + msg);
@@ -166,6 +169,7 @@ public class Config {
 		return message;
 	}
 
+	// Management form
 	public static void setShape(boolean round) {
 		shapeRound = round;
 		Log("Set default border shape to " + (ShapeName()) + ".");
@@ -182,7 +186,7 @@ public class Config {
 	}
 
 	public static String ShapeName(boolean round) {
-		return round ? "elliptic/round" : "rectangular/square";
+		return round ? "elliptic/round" : "rectangular/square/polygon";
 	}
 
 	public static void setDebug(boolean debugMode) {
@@ -195,6 +199,7 @@ public class Config {
 		return DEBUG;
 	}
 
+	// Some effects
 	public static void setWhooshEffect(boolean enable) {
 		whooshEffect = enable;
 		Log("\"Whoosh\" knockback effect " + (enable ? "enabled" : "disabled")
@@ -239,6 +244,7 @@ public class Config {
 		return timerTicks;
 	}
 
+	// DynMap Manegement
 	public static void setDynmapBorderEnabled(boolean enable) {
 		dynmapEnable = enable;
 		Log("DynMap border display is now " + (enable ? "enabled" : "disabled")
@@ -343,15 +349,11 @@ public class Config {
 	}
 
 	public static int AvailableMemory() {
-		return (int) ((rt.maxMemory() - rt.totalMemory() + rt.freeMemory()) / 1048576); // 1024*1024
-																						// =
-																						// 1048576
-																						// (bytes
-																						// in
-																						// 1
-																						// MB)
+		return (int) ((rt.maxMemory() - rt.totalMemory() + rt.freeMemory()) / 1048576); 
+		// 1024*1024 = 1048576 (bytes in 1 MB)
 	}
-
+	
+	// Permission management
 	public static boolean HasPermission(Player player, String request) {
 		return HasPermission(player, request, true);
 	}

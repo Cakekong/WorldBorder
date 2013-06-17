@@ -6,70 +6,54 @@ import java.util.LinkedHashSet;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import java.awt.Point;
 
 public class BorderData {
 	// the main data interacted with
-	private double x = 0;
-	private double z = 0;
-	private int radiusX = 0;
-	private int radiusZ = 0;
-	private Boolean shapeRound = null;
-	private boolean wrapping = false;
-	
-	
-	// Boolean if it is polygon ( = not round, not square)
-	private Boolean polygon = null;
+	private double x = 0; 					// x central position
+	private double z = 0; 					// y central position
+	private int radiusX = 0; 				// 
+	private int radiusZ = 0; 				// 
+	private Boolean shapeRound = null; 		// Round ?
+	private boolean wrapping = false; 		// Teleportation on border ?
+	private Boolean polygon = null;			// Boolean if it is polygon ( = not round, not square)
 
-	
 	// some extra data kept handy for faster border checks
-	private double maxX;
-	private double minX;
-	private double maxZ;
-	private double minZ;
-	
-	
-	// tab contains X coordonates of polygon
-	private int[] pointsx = null /*{ 0, 0, 500, 500 }*/;
-	// tab contains Y coordonates of polygon
-	private int[] pointsy = null /*{ 0, 500, 500, 0 }*/;
-	// Number of corners of polygon
-	private int npoints = 0;
-	// Creatio of polygon
-	Polygon P = new Polygon(pointsx, pointsy, npoints);
-
-
-	private double radiusXSquared;
-	private double radiusZSquared;
-	private double DefiniteRectangleX;
-	private double DefiniteRectangleZ;
-	private double radiusSquaredQuotient;
+	private double maxX;				//
+	private double minX;				//
+	private double maxZ;				//
+	private double minZ; 				//
+	private int[] pointsx = null; 		// tab contains X coordonates of polygon (ex.: { 0, 0, 500, 500 })
+	private int[] pointsy = null; 		// tab contains Y coordonates of polygon (ex.:  { 0, 500, 500, 0 })
+	private int npoints = 0; 	  		// Number of corners of polygon
+	Polygon P = new Polygon(pointsx, pointsy, npoints);		// Polygon creation
+	private double radiusXSquared;		//
+	private double radiusZSquared;		//
+	private double DefiniteRectangleX;	//
+	private double DefiniteRectangleZ;	//
+	private double radiusSquaredQuotient;//
 
 	
 	/* BorderData */
-	public BorderData(double x, double z, int radiusX, int radiusZ,
-			Boolean shapeRound, boolean wrap) {
+	public BorderData(double x, double z, int radiusX, int radiusZ,	Boolean shapeRound, boolean wrap) {
 		setData(x, z, radiusX, radiusZ, shapeRound, wrap);
 	}
 
-	public BorderData(double x, double z, int radiusX, int radiusZ) {
-		setData(x, z, radiusX, radiusZ, null);
-	}
-
-	public BorderData(double x, double z, int radiusX, int radiusZ,
-			Boolean shapeRound) {
+	public BorderData(double x, double z, int radiusX, int radiusZ,	Boolean shapeRound) {
 		setData(x, z, radiusX, radiusZ, shapeRound);
 	}
-
-	public BorderData(double x, double z, int radius) {
-		setData(x, z, radius, null);
+	
+	public BorderData(double x, double z, int radiusX, int radiusZ) {
+		setData(x, z, radiusX, radiusZ, null);
 	}
 
 	public BorderData(double x, double z, int radius, Boolean shapeRound) {
 		setData(x, z, radius, shapeRound);
 	}
-
 	
+	public BorderData(double x, double z, int radius) {
+		setData(x, z, radius, null);
+	}
+
 	/* BorderDate for Polygon
 	 * 	@Params : 
 	 * 				- x : x coordonate of central point of polygon
@@ -78,8 +62,8 @@ public class BorderData {
 	 * 				- pointsy : tab contains Y coordonates of polygon
 	 * 	@Return : ???? 
 	 */
-	public BorderData(double x, double z, double[] pointsx, double[] pointsy) {
-		setData(x, z, pointsx, pointsy);
+	public BorderData(double x, double z, double[] pointsx, double[] pointsz, Boolean shapeRound) {
+		setData(x, z, pointsx, pointsz, shapeRound);
 	}
 	
 	/* setDate for Polygon
@@ -90,10 +74,9 @@ public class BorderData {
 	 * 				- pointsy : tab contains Y coordonates of polygon
 	 * 	@Return : ???? 
 	 */
-	public final void setData(double x, double z, double[] pointsx, double[] pointsy) {
-		setData(x, z, pointsx, pointsy);
+	public final void setData(double x, double z, double[] pointsx, double[] pointsz, Boolean shapeRound) {
+		setData(x, z, pointsx, pointsz, shapeRound);
 	}
-
 	
 	public final void setData(double x, double z, int radiusX, int radiusZ,
 			Boolean shapeRound, boolean wrap) {
@@ -118,6 +101,7 @@ public class BorderData {
 		return new BorderData(x, z, radiusX, radiusZ, shapeRound, wrapping);
 	}
 
+	//get-er & set-er
 	public double getX() {
 		return x;
 	}
@@ -164,8 +148,7 @@ public class BorderData {
 		this.DefiniteRectangleZ = Math.sqrt(.5 * this.radiusZSquared);
 	}
 
-	// backwards-compatible methods from before elliptical/rectangular shapes
-	// were supported
+	// backwards-compatible methods from before elliptical/rectangular shapes were supported
 	/**
 	 * @deprecated Replaced by {@link #getRadiusX()} and {@link #getRadiusZ()};
 	 *             this method now returns an average of those two values and is
@@ -211,8 +194,8 @@ public class BorderData {
 						: "") + (wrapping ? (" (wrapping)") : "");
 	}
 
-	// This algorithm of course needs to be fast, since it will be run very
-	// frequently
+	// insideBorder
+	// This algorithm of course needs to be fast, since it will be run very frequently
 	public boolean insideBorder(double xLoc, double zLoc, boolean round) {
 		// if this border has a shape override set, use it
 		if (shapeRound != null)

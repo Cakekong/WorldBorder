@@ -195,6 +195,7 @@ public class DynMapFeatures
 		}
 	}
 
+	// To modify ... !!!!!
 	private static void showSquareBorder(String worldName, BorderData border)
 	{
 		if (roundBorders.containsKey(worldName))

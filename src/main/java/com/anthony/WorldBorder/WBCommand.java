@@ -30,7 +30,14 @@ public class WBCommand implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
+	// To modify ... !!!
 	@Override
+	/**
+	 * sender - Source of the command
+	 * command - Command which was executed
+	 * label - Alias of the command which was used
+	 * split - Passed command arguments
+	 */
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] split) {
 		Player player = (sender instanceof Player) ? (Player) sender : null;
@@ -65,17 +72,6 @@ public class WBCommand implements CommandExecutor {
 				}
 			}
 		}
-
-		/********************************************************************************/
-		if (split[1].equalsIgnoreCase("set")) {
-			if (!Config.HasPermission(player, "set"))
-				return true;
-			String world = player.getWorld().getName();
-			if (cmdSet(sender, world, split, 1, (split.length == 4)))
-				sender.sendMessage("Border has been set. "
-						+ Config.BorderDescription(world));
-		}
-		/********************************************************************************/
 
 		// "set" command from player or console, world specified
 		if ((split.length == 5 || split.length == 6)
@@ -178,6 +174,33 @@ public class WBCommand implements CommandExecutor {
 				sender.sendMessage("Border has been set. "
 						+ Config.BorderDescription(world));
 		}
+
+		/********************************************************************************/
+		else if (split.length == 5 && split[0].equalsIgnoreCase("polygon")
+				&& player != null) {
+			if (!Config.HasPermission(player, "polygon"))
+				return true;
+
+			String world = player.getWorld().getName();
+
+			try {
+				double x = Double.parseDouble(split[2]);
+				double z = Double.parseDouble(split[3]);
+				double pointsx = Double.parseDouble(split[4]);
+				double pointsz = Double.parseDouble(split[5]);
+				Config.setBorderCorners(world, x, z, pointsx, pointsz);
+			} catch (NumberFormatException ex) {
+				sender.sendMessage(clrErr
+						+ "The x, z, pointsx, and pointsz values must be numerical.");
+				return true;
+			}
+			
+			sender.sendMessage("Border has been set. "
+					+ Config.BorderDescription(world));
+
+		}
+
+		/********************************************************************************/
 
 		// "setcorners" command from player, using current world
 		else if (split.length == 5 && split[0].equalsIgnoreCase("setcorners")

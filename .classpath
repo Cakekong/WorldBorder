@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Cakekong/workspace/bukkit-1.5.2-R0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Cakekong/workspace/dynmap-1.7.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cakekong/workspace/WorldBorder/bukkit-1.5.2-R0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cakekong/workspace/WorldBorder/dynmap-1.7.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
